@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    depends_on:
+      - db
+    restart: always
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  log-forwarder:
+    build: ./log-forwarder
+    volumes:
+      - ./server-logs:/logs
+    environment:
+      LOG_FILE_PATH: /logs/server-console.txt
+      API_URL: http://backend:5000/api/stats
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  postgres_data:

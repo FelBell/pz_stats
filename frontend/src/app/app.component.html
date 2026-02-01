@@ -1,0 +1,29 @@
+<div style="padding: 20px;">
+  <h1>Project Zomboid Player Stats</h1>
+  <button (click)="fetchStats()">Refresh</button>
+
+  <table border="1" cellpadding="5" style="margin-top: 20px; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Player</th>
+        <th>Event</th>
+        <th>Data</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stat of stats">
+        <td>{{ stat.id }}</td>
+        <td>{{ stat.player_name }}</td>
+        <td>{{ stat.event_type }}</td>
+        <td>{{ stat.data }}</td>
+        <td>{{ stat.timestamp }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="stats.length === 0">
+    No stats available (or backend unreachable).
+  </div>
+</div>
