@@ -1,3 +1,9 @@
+node_modules/
+dist/
+.angular/
+.vscode/
+npm_start.log
+*.png
 __pycache__/
 *.py[cod]
 *$py.class

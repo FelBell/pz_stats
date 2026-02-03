@@ -1,3 +1,14 @@
+# Stage 1: Build
+FROM node:22-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Stage 2: Serve
 FROM nginx:alpine
-# Placeholder for Angular app
-RUN echo "Frontend placeholder" > /usr/share/nginx/html/index.html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
