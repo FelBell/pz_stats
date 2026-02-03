@@ -1,59 +1,48 @@
-# Frontend
+# Frontend Service
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+This is the Angular frontend application for the Project Zomboid Stats project. It provides a user interface to view player statistics and game runs.
 
-## Development server
+## Key Files
 
-To start a local development server, run:
+- **`Dockerfile`**: Defines the two-stage build process. It uses a Node.js image to build the Angular application and an Nginx image to serve the resulting static files.
+- **`nginx.conf`**: The Nginx configuration used in the production Docker container. It handles routing for the Angular SPA (Single Page Application) and proxies requests starting with `/api/` to the backend service.
+- **`proxy.conf.json`**: Configuration for the Angular development server (`ng serve`). It proxies API requests to the backend service during local development.
+- **`package.json`**: Contains project dependencies and scripts for building, testing, and running the application.
 
-```bash
-ng serve
-```
+## Running with Docker
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The frontend is typically run as part of the project's Docker Compose stack.
 
-## Code scaffolding
+### Build and Run
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+To build and start the entire stack, including the frontend:
 
 ```bash
-ng generate --help
+docker-compose up -d --build
 ```
 
-## Building
+The frontend will be served on port 80 within its container, and Traefik will route external traffic to it based on the `DOMAIN` environment variable defined in your `.env` file.
 
-To build the project run:
+## Local Development
+
+To run the frontend locally for development:
+
+1.  **Install dependencies**:
+    ```bash
+    cd frontend
+    npm install
+    ```
+
+2.  **Start the development server**:
+    ```bash
+    npm start
+    ```
+    The application will be available at `http://localhost:4200`. It will proxy `/api` requests to `http://backend:5000` as defined in `proxy.conf.json`.
+
+## Testing
+
+Unit tests are managed with Vitest. To run the tests once:
 
 ```bash
-ng build
+npm test
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
