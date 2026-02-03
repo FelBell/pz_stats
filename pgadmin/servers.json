@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "PZ Stats DB",
+            "Group": "Servers",
+            "Port": 5432,
+            "Username": "pz_user",
+            "Host": "db",
+            "MaintenanceDB": "pz_stats",
+            "SSLMode": "prefer"
+        }
+    }
+}
