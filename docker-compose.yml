@@ -47,6 +47,8 @@ services:
 
   traefik:
     image: traefik:v2.5
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL?Variable not set}
     ports:
       - "80:80"
       - "443:443"
